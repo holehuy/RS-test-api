@@ -4,8 +4,9 @@
   "main": "src/app.ts",
   "license": "MIT",
   "scripts": {
+    "build": "rimraf dist && tsc",
     "dev": "nodemon --config nodemon.json src/app.ts",
-    "start": "nodemon --config nodemon.json src/app.ts"
+    "start": "node dist/src/app.js"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
