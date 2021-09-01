@@ -31,7 +31,11 @@ export default function (app: Express) {
   app.get('/api/v1/works/:workId', getOneWorkHandler);
   //update work
 
-  app.put('/api/v1/works/:workId',validateRequest(updateWorkSchema),updateWorkHandler)
+  app.put(
+    '/api/v1/works/:workId',
+    validateRequest(updateWorkSchema),
+    updateWorkHandler
+  );
   //delete work
   app.delete(
     '/api/v1/works/:workId',

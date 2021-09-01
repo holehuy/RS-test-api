@@ -1,7 +1,10 @@
 import { object, string } from 'yup';
 const payload = {
   body: object({
-    title: string().required('Title is required'),
+    title: string()
+      .required('Title is required')
+      .max(100, 'Title must be less than 100 characters')
+      .min(8, 'Title must be more than 8 characters'),
   }),
 };
 

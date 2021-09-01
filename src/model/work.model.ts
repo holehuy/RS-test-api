@@ -12,6 +12,5 @@ const WorkSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
 const Work = mongoose.model('Work', WorkSchema);
 export default Work;
