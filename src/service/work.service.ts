@@ -12,7 +12,7 @@ interface queryGetWork {
   page: string;
   limit: string;
   textSearch?: string;
-  sort?: 'desc' | 'asc';
+  sort?: '-createdAt' | '+createdASC' | '-title' | '+title';
 }
 
 export function createWork(input: DocumentDefinition<WorkDocument>) {
@@ -24,7 +24,8 @@ export async function getManyWorks(query: queryGetWork) {
     const limit: number = parseInt(query.limit) || PAGINATION.LIMIT_DEFAULT;
     const page: number = parseInt(query.page) || PAGINATION.PAGE_DEFAULT;
     const textSearch: string = query.textSearch || '';
-    const sort: string = query.sort || 'desc';
+    const sort: string = query.sort || '-createdAt';
+
     if (textSearch) {
       const works = await Work.find({ $text: { $search: textSearch } })
         .limit(limit)
@@ -33,10 +34,28 @@ export async function getManyWorks(query: queryGetWork) {
       const lastPage = Math.ceil(count / limit);
       return { count, lastPage, works };
     }
+    let sortOption;
+
+    switch (sort) {
+      case '-createdAt':
+        sortOption = { createdAt: -1 };
+        break;
+      case '-createdAt':
+        sortOption = { createdAt: 1 };
+        break;
+      case '-title':
+        sortOption = { title: -1 };
+        break;
+      case '+title':
+        sortOption = { title: 1 };
+        break;
+      default:
+        break;
+    }
     const works = await Work.find()
       .limit(limit)
       .skip(limit * (page - 1))
-      .sort({ createdAt: sort === 'desc' ? -1 : 1 });
+      .sort(sortOption);
     const count = await Work.countDocuments();
     const lastPage = Math.ceil(count / limit);
     return { count, lastPage, works };
